@@ -1,26 +1,24 @@
-const express = require('express'); 
-// Importa o framework Express, usado para criar e configurar o servidor HTTP.
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const bookRoutes = require('./routes/books');
 
-const cors = require('cors'); 
-// Importa o middleware CORS para permitir o acesso da API por aplicações frontend hospedadas em origens diferentes.
+// Carrega as variáveis de ambiente do arquivo .env
+require('dotenv').config();
 
-const bodyParser = require('body-parser'); 
-// Importa o middleware Body Parser, usado para processar o corpo das requisições em formato JSON.
+const app = express();
 
-const bookRoutes = require('./routes/books'); 
-// Importa as rotas definidas no módulo `books` para gerenciar operações de CRUD no recurso "livros".
+app.use(cors());
+app.use(bodyParser.json());
 
-const app = express(); 
-// Cria uma instância do aplicativo Express.
+// Rota principal para os endpoints de livros
+app.use('/api/books', bookRoutes);
 
-app.use(cors()); 
-// Habilita o CORS, permitindo que o frontend se comunique com o backend, mesmo que estejam em servidores diferentes.
+// Porta do servidor obtida do arquivo .env ou padrão 3000
+const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json()); 
-// Configura o middleware para que o servidor consiga interpretar JSON enviado no corpo das requisições.
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
 
-app.use('/api/books', bookRoutes); 
-// Define que todas as rotas iniciadas com `/api/books` devem ser tratadas pelo roteador `bookRoutes`.
-
-module.exports = app; 
-// Exporta o aplicativo Express para ser usado em outro módulo.
+module.exports = app;

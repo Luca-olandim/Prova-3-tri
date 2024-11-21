@@ -30,6 +30,7 @@ const BookForm = () => {
         setAuthor(''); 
         setGenre(''); 
         setYear('');
+        window.location.reload()
     };
 
     return (
